@@ -213,6 +213,7 @@ const perguntasPorNivel = {
 };
 
 const tempoPorNivel = { 'facil': 20, 'medio': 30, 'dificil': 35, 'expert': 40 };
+const pontosPorNivel = { 'facil': 10, 'medio': 20, 'dificil': 30, 'expert': 40 };
 
 let estadoJogo = { nome: '', categoria: '', nivel: '', nivelId: 0, pontuacao: 0, perguntaAtual: 0 };
 let timerInterval;
@@ -309,8 +310,10 @@ function checarResposta(e) {
     const indice = Array.from(document.querySelectorAll('.escolha')).indexOf(d);
     const correta = perguntasAtuais[estadoJogo.perguntaAtual].correta;
     document.querySelectorAll('.escolha').forEach(x => x.style.pointerEvents = 'none');
+    
     if (indice === correta) {
-        estadoJogo.pontuacao += 10;
+        const pontosNivel = pontosPorNivel[nivelAtual] || 10;
+        estadoJogo.pontuacao += pontosNivel;
         d.classList.add('resposta-correta');
         d.setAttribute('aria-pressed', 'true');
         tocarSomAcerto();
@@ -319,6 +322,7 @@ function checarResposta(e) {
         document.querySelectorAll('.escolha')[correta].classList.add('resposta-correta');
         tocarSomErro();
     }
+    
     atualizarHeader();
     savePlayer({ name: estadoJogo.nome, score: estadoJogo.pontuacao });
     setTimeout(() => {
@@ -347,8 +351,12 @@ function respostaErradaPorTempo() {
 function finalizarJogo() {
     pararTimer();
     const total = perguntasAtuais.length;
+    const pontosNivel = pontosPorNivel[nivelAtual] || 10;
+    const pontosMaximos = total * pontosNivel;
+    const acertos = Math.round(estadoJogo.pontuacao / pontosNivel);
+    
     document.getElementById('pergunta-texto').innerHTML =
-        `Fim do jogo!<br>Pontuação: ${estadoJogo.pontuacao}/${total * 10}<br>Você acertou ${Math.round(estadoJogo.pontuacao / 10)}/${total} perguntas!<br><small>Redirecionando...</small>`;
+        `Fim do jogo!<br>Pontuação: ${estadoJogo.pontuacao}/${pontosMaximos}<br>Você acertou ${acertos}/${total} perguntas!<br><small>Redirecionando...</small>`;
     document.querySelectorAll('.escolha').forEach(d => d.style.display = 'none');
     savePlayer({ name: estadoJogo.nome, score: estadoJogo.pontuacao });
     setTimeout(() => {
@@ -369,12 +377,13 @@ function voltarInicio() {
 document.addEventListener('DOMContentLoaded', function () {
     const url = new URLSearchParams(window.location.search);
     estadoJogo.nome = decodeURIComponent(url.get('player') || 'MARIO');
-    estadoJogo.categoria = url.get('category') || 'automobilismo';
+    estadoJogo.categoria = url.get('category') || 'culinaria';
     estadoJogo.nivel = url.get('nivel') || 'facil';
     estadoJogo.nivelId = { 'facil': 1, 'medio': 2, 'dificil': 3, 'expert': 4 }[estadoJogo.nivel] || 1;
     nivelAtual = estadoJogo.nivel;
     estadoJogo.pontuacao = parseInt(url.get('score') || '0');
     atualizarHeader();
+    
     document.querySelectorAll('.escolha').forEach(d => {
         d.addEventListener('click', checarResposta);
         d.addEventListener('keydown', function (e) {
