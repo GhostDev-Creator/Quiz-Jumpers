@@ -212,106 +212,62 @@ const perguntasPorNivel = {
     ]
 };
 
-const tempoPorNivel = {
-    'facil': 20,
-    'medio': 30,
-    'dificil': 35,
-    'expert': 40
-};
+const tempoPorNivel = { 'facil': 20, 'medio': 30, 'dificil': 35, 'expert': 40 };
 
-let estadoJogo = {
-    nome: '',
-    categoria: '',
-    nivel: '',
-    nivelId: 0,
-    pontuacao: 0,
-    perguntaAtual: 0
-};
-
+let estadoJogo = { nome: '', categoria: '', nivel: '', nivelId: 0, pontuacao: 0, perguntaAtual: 0 };
 let timerInterval;
 let tempoRestante = 30;
 let jogoBloqueado = false;
 let perguntasAtuais = [];
 let nivelAtual = 'facil';
 
-const loadPlayer = () => {
-    try {
-        return JSON.parse(localStorage.getItem('marioPlayer') || '{}');
-    } catch {
-        return { name: 'MARIO', score: 0 };
-    }
-};
-
-const savePlayer = (player) => {
-    localStorage.setItem('marioPlayer', JSON.stringify(player));
-};
+const savePlayer = (p) => localStorage.setItem('marioPlayer', JSON.stringify(p));
 
 function tocarSomAcerto() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-
-    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + 0.2);
+    const a = new (window.AudioContext || window.webkitAudioContext)();
+    const o = a.createOscillator();
+    const g = a.createGain();
+    o.connect(g); g.connect(a.destination);
+    o.frequency.setValueAtTime(800, a.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1200, a.currentTime + 0.1);
+    g.gain.setValueAtTime(0.3, a.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, a.currentTime + 0.2);
+    o.start(a.currentTime); o.stop(a.currentTime + 0.2);
 }
 
 function tocarSomErro() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator1 = audioCtx.createOscillator();
-    const oscillator2 = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    oscillator1.connect(gainNode);
-    oscillator2.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator1.frequency.setValueAtTime(200, audioCtx.currentTime);
-    oscillator2.frequency.setValueAtTime(150, audioCtx.currentTime);
-
-    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-
-    oscillator1.start(audioCtx.currentTime);
-    oscillator2.start(audioCtx.currentTime);
-    oscillator1.stop(audioCtx.currentTime + 0.4);
-    oscillator2.stop(audioCtx.currentTime + 0.4);
+    const a = new (window.AudioContext || window.webkitAudioContext)();
+    const o1 = a.createOscillator();
+    const o2 = a.createOscillator();
+    const g = a.createGain();
+    o1.connect(g); o2.connect(g); g.connect(a.destination);
+    o1.frequency.setValueAtTime(200, a.currentTime);
+    o2.frequency.setValueAtTime(150, a.currentTime);
+    g.gain.setValueAtTime(0.2, a.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, a.currentTime + 0.4);
+    o1.start(a.currentTime); o2.start(a.currentTime);
+    o1.stop(a.currentTime + 0.4); o2.stop(a.currentTime + 0.4);
 }
 
 function atualizarHeader() {
-    const nomeJogador = document.getElementById('nome-jogador');
-    const pontuacaoSpan = document.getElementById('pontuacao');
-
-    if (nomeJogador) nomeJogador.textContent = `JOGADOR: ${estadoJogo.nome}`;
-    if (pontuacaoSpan) pontuacaoSpan.textContent = estadoJogo.pontuacao;
+    const nome = document.getElementById('nome-jogador');
+    const pts = document.getElementById('pontuacao');
+    if (nome) nome.textContent = `JOGADOR: ${estadoJogo.nome}`;
+    if (pts) pts.textContent = estadoJogo.pontuacao;
 }
 
 function atualizarTimer() {
-    const timerEl = document.getElementById('timer');
-    const perguntaEl = document.getElementById('pergunta-texto');
-
-    timerEl.textContent = `${tempoRestante}s`;
-    timerEl.classList.toggle('perigo', tempoRestante <= 5);
-
-    perguntaEl.innerHTML = `${perguntasAtuais[estadoJogo.perguntaAtual].texto}`;
+    document.getElementById('timer').textContent = `${tempoRestante}s`;
+    document.getElementById('timer').classList.toggle('perigo', tempoRestante <= 5);
+    document.getElementById('pergunta-texto').innerHTML = perguntasAtuais[estadoJogo.perguntaAtual].texto;
 }
 
 function iniciarTimer() {
     tempoRestante = tempoPorNivel[nivelAtual] || 30;
     atualizarTimer();
-
     timerInterval = setInterval(() => {
         tempoRestante--;
         atualizarTimer();
-
         if (tempoRestante <= 0) {
             clearInterval(timerInterval);
             respostaErradaPorTempo();
@@ -324,60 +280,47 @@ function pararTimer() {
 }
 
 function carregarPergunta() {
-    if (estadoJogo.nivelId === 0 || !perguntasPorNivel[estadoJogo.nivelId]) {
+    if (!perguntasPorNivel[estadoJogo.nivelId]) {
         document.getElementById('pergunta-texto').textContent = 'Erro: Nível não encontrado!';
         return;
     }
-
     perguntasAtuais = perguntasPorNivel[estadoJogo.nivelId];
-
     if (estadoJogo.perguntaAtual >= perguntasAtuais.length) {
         finalizarJogo();
         return;
     }
-
-    const pergunta = perguntasAtuais[estadoJogo.perguntaAtual];
-    document.getElementById('pergunta-texto').innerHTML = pergunta.texto;
-
-    document.querySelectorAll('.escolha').forEach((div, i) => {
-        div.querySelector('h1').textContent = pergunta.respostas[i];
-        div.classList.remove('resposta-correta', 'resposta-incorreta', 'selecionada');
-        div.style.pointerEvents = 'auto';
-        div.setAttribute('aria-pressed', 'false');
+    const p = perguntasAtuais[estadoJogo.perguntaAtual];
+    document.getElementById('pergunta-texto').innerHTML = p.texto;
+    document.querySelectorAll('.escolha').forEach((d, i) => {
+        d.querySelector('h1').textContent = p.respostas[i];
+        d.classList.remove('resposta-correta', 'resposta-incorreta', 'selecionada');
+        d.style.pointerEvents = 'auto';
+        d.setAttribute('aria-pressed', 'false');
     });
-
     jogoBloqueado = false;
     iniciarTimer();
 }
 
 function checarResposta(e) {
     if (jogoBloqueado) return;
-
     jogoBloqueado = true;
     pararTimer();
-
-    const divEscolha = e.currentTarget;
-    const indice = Array.from(document.querySelectorAll('.escolha')).indexOf(divEscolha);
+    const d = e.currentTarget;
+    const indice = Array.from(document.querySelectorAll('.escolha')).indexOf(d);
     const correta = perguntasAtuais[estadoJogo.perguntaAtual].correta;
-
-    document.querySelectorAll('.escolha').forEach(div => {
-        div.style.pointerEvents = 'none';
-    });
-
+    document.querySelectorAll('.escolha').forEach(x => x.style.pointerEvents = 'none');
     if (indice === correta) {
         estadoJogo.pontuacao += 10;
-        divEscolha.classList.add('resposta-correta');
-        divEscolha.setAttribute('aria-pressed', 'true');
+        d.classList.add('resposta-correta');
+        d.setAttribute('aria-pressed', 'true');
         tocarSomAcerto();
     } else {
-        divEscolha.classList.add('resposta-incorreta');
+        d.classList.add('resposta-incorreta');
         document.querySelectorAll('.escolha')[correta].classList.add('resposta-correta');
         tocarSomErro();
     }
-
     atualizarHeader();
     savePlayer({ name: estadoJogo.nome, score: estadoJogo.pontuacao });
-
     setTimeout(() => {
         estadoJogo.perguntaAtual++;
         carregarPergunta();
@@ -386,23 +329,15 @@ function checarResposta(e) {
 
 function respostaErradaPorTempo() {
     if (jogoBloqueado) return;
-
     jogoBloqueado = true;
     tocarSomErro();
-
     const correta = perguntasAtuais[estadoJogo.perguntaAtual].correta;
-
     document.getElementById('pergunta-texto').innerHTML =
-        `${perguntasAtuais[estadoJogo.perguntaAtual].texto}<br><span style="color: #ff4444;">Tempo esgotado!</span>`;
-
+        perguntasAtuais[estadoJogo.perguntaAtual].texto + "<br><span style='color: #ff4444;'>Tempo esgotado!</span>";
     document.querySelectorAll('.escolha')[correta].classList.add('resposta-correta');
-    document.querySelectorAll('.escolha').forEach(div => {
-        div.style.pointerEvents = 'none';
-    });
-
+    document.querySelectorAll('.escolha').forEach(x => x.style.pointerEvents = 'none');
     atualizarHeader();
     savePlayer({ name: estadoJogo.nome, score: estadoJogo.pontuacao });
-
     setTimeout(() => {
         estadoJogo.perguntaAtual++;
         carregarPergunta();
@@ -414,93 +349,40 @@ function finalizarJogo() {
     const total = perguntasAtuais.length;
     document.getElementById('pergunta-texto').innerHTML =
         `Fim do jogo!<br>Pontuação: ${estadoJogo.pontuacao}/${total * 10}<br>Você acertou ${Math.round(estadoJogo.pontuacao / 10)}/${total} perguntas!<br><small>Redirecionando...</small>`;
-
-    document.querySelectorAll('.escolha').forEach(div => {
-        div.style.display = 'none';
-    });
-
+    document.querySelectorAll('.escolha').forEach(d => d.style.display = 'none');
     savePlayer({ name: estadoJogo.nome, score: estadoJogo.pontuacao });
-
     setTimeout(() => {
         window.location.href = '../index.html';
     }, 4000);
 }
 
 function voltarInicio() {
-    window.location.href = 'categorias.html';
+    const params = new URLSearchParams({
+        player: estadoJogo.nome,
+        score: estadoJogo.pontuacao,
+        category: estadoJogo.categoria,
+        nivel: estadoJogo.nivel
+    });
+    window.location.href = 'categorias.html?' + params.toString();
 }
 
-const cloudsContainer = document.getElementById('cloudsContainer');
-const floorDetailsContainer = document.getElementById('floorDetailsContainer');
-let lastCloudSpawn = 0;
-let lastFloorDetailSpawn = 0;
-
-const createCloud = () => {
-    const cloud = document.createElement('img');
-    cloud.src = '../images/nuvem.png';
-    cloud.alt = 'Nuvem';
-    const sizes = ['small', 'medium', 'large'];
-    cloud.className = `cloud ${sizes[Math.floor(Math.random() * sizes.length)]}`;
-    cloud.style.top = `${Math.random() * 30 + 10}vh`;
-    const duration = 20000 + Math.random() * 10000;
-    cloud.style.animationDuration = `${duration}ms`;
-    const removeCloud = () => cloud.parentNode?.removeChild(cloud);
-    cloud.addEventListener('animationend', removeCloud);
-    setTimeout(removeCloud, duration + 1000);
-    cloudsContainer.appendChild(cloud);
-};
-
-const createFloorDetail = () => {
-    const detail = document.createElement('img');
-    detail.src = '../images/bush-1.png';
-    detail.alt = 'Detalhe';
-    const sizes = ['small', 'medium', 'large'];
-    detail.className = `floor-detail ${sizes[Math.floor(Math.random() * sizes.length)]}`;
-    const duration = 15000 + Math.random() * 8000;
-    detail.style.animationDuration = `${duration}ms`;
-    const removeDetail = () => detail.parentNode?.removeChild(detail);
-    detail.addEventListener('animationend', removeDetail);
-    setTimeout(removeDetail, duration + 1000);
-    floorDetailsContainer.appendChild(detail);
-};
-
-const animateBackground = (timestamp) => {
-    if (timestamp - lastCloudSpawn > 4000 && Math.random() > 0.3) {
-        createCloud();
-        lastCloudSpawn = timestamp;
-    }
-    if (timestamp - lastFloorDetailSpawn > 3500 && Math.random() > 0.4) {
-        createFloorDetail();
-        lastFloorDetailSpawn = timestamp;
-    }
-    requestAnimationFrame(animateBackground);
-};
-
 document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    estadoJogo.nome = decodeURIComponent(urlParams.get('player') || 'MARIO');
-    estadoJogo.categoria = urlParams.get('category') || 'ciencias';
-    estadoJogo.nivel = urlParams.get('nivel') || 'facil';
+    const url = new URLSearchParams(window.location.search);
+    estadoJogo.nome = decodeURIComponent(url.get('player') || 'MARIO');
+    estadoJogo.categoria = url.get('category') || 'automobilismo';
+    estadoJogo.nivel = url.get('nivel') || 'facil';
     estadoJogo.nivelId = { 'facil': 1, 'medio': 2, 'dificil': 3, 'expert': 4 }[estadoJogo.nivel] || 1;
     nivelAtual = estadoJogo.nivel;
-
-    estadoJogo.pontuacao = 0;
-
-    savePlayer({ name: estadoJogo.nome, score: 0 });
-
+    estadoJogo.pontuacao = parseInt(url.get('score') || '0');
     atualizarHeader();
-
-    document.querySelectorAll('.escolha').forEach(div => {
-        div.addEventListener('click', checarResposta);
-
-        div.addEventListener('keydown', function (e) {
+    document.querySelectorAll('.escolha').forEach(d => {
+        d.addEventListener('click', checarResposta);
+        d.addEventListener('keydown', function (e) {
             if ((e.key === 'Enter' || e.key === ' ') && !jogoBloqueado) {
                 e.preventDefault();
                 checarResposta({ currentTarget: this });
             }
         });
     });
-
     carregarPergunta();
-    requestAnimationFrame(animateBackground);
 });
