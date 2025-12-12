@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Jumpers | Games - Perguntas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/games-quiz.css">
+</head>
+<body>
+    <div class="player-info">
+        <div id="nome-jogador">JOGADOR: MARIO</div>
+        <div>PONTOS: <span id="pontuacao">0</span></div>
+    </div>
+
+    <div class="timer" id="timer">30s</div>
+
+    <div class="btn-voltar" onclick="voltarInicio()">VOLTAR</div>
+
+    <div class="clouds-container" id="cloudsContainer"></div>
+    <div class="floor"></div>
+    <div class="floor-details-container" id="floorDetailsContainer"></div>
+
+    <div class="pergunta">
+        <h1 id="pergunta-texto">Carregando pergunta...</h1>
+        <div class="escolha" tabindex="0" role="button">
+            <h1>Resposta 1</h1>
+        </div>
+        <div class="escolha" tabindex="0" role="button">
+            <h1>Resposta 2</h1>
+        </div>
+        <div class="escolha" tabindex="0" role="button">
+            <h1>Resposta 3</h1>
+        </div>
+        <div class="escolha" tabindex="0" role="button">
+            <h1>Resposta 4</h1>
+        </div>
+    </div>
+
+    <script src="../js/games-quiz.js"></script>
+</body>
+</html>

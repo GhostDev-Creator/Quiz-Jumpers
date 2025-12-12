@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+    background: linear-gradient(to bottom, #87CEEB 0%, #a1adff 70%);
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+.container-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.floor {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 80px;
+    background-image:
+        url('../images/floor.png'),
+        linear-gradient(to top, #dc591a, #e67e22);
+    background-size: 120px 120px;
+    background-repeat: repeat;
+    background-position: bottom left;
+    z-index: 2;
+}
+
+.clouds-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes movement {
+    0% {
+        transform: translateX(100vw);
+    }
+
+    100% {
+        transform: translateX(-120px);
+    }
+}
+
+.cloud {
+    position: absolute;
+    width: clamp(60px, 12vw, 120px);
+    opacity: 0.8;
+    animation: movement linear infinite;
+    pointer-events: none;
+}
+
+.cloud.small {
+    width: clamp(50px, 8vw, 80px);
+    opacity: 0.7;
+    animation-duration: 30s;
+}
+
+.cloud.medium {
+    width: clamp(70px, 10vw, 120px);
+    opacity: 0.8;
+    animation-duration: 25s;
+}
+
+.cloud.large {
+    width: clamp(90px, 14vw, 160px);
+    opacity: 0.9;
+    animation-duration: 20s;
+}
+
+.floor-details-container {
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    width: 100vw;
+    height: 120px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes floorMovement {
+    0% {
+        transform: translateX(100vw);
+    }
+
+    100% {
+        transform: translateX(-150px);
+    }
+}
+
+.floor-detail {
+    position: absolute;
+    bottom: 10px;
+    width: clamp(40px, 8vw, 70px);
+    height: auto;
+    animation: floorMovement linear infinite;
+    pointer-events: none;
+    opacity: 0.95;
+}
+
+.floor-detail.small {
+    width: clamp(35px, 6vw, 55px);
+    animation-duration: 18s;
+}
+
+.floor-detail.medium {
+    width: clamp(45px, 8vw, 80px);
+    animation-duration: 15s;
+}
+
+.floor-detail.large {
+    width: clamp(55px, 10vw, 100px);
+    animation-duration: 12s;
+}
+
+.player-info {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: #FFF;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    text-shadow: 2px 2px 0px #000;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#playerNameDisplay,
+#playerScore {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: clamp(150px, 35vw, 250px);
+}
+
+.btn-voltar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(145deg, #FF6B35, #FF8C42);
+    border: 5px solid #0F0600;
+    border-top: 5px solid #FAC2A7;
+    border-left: 5px solid #FAC2A7;
+    padding: clamp(12px, 3vw, 18px) clamp(20px, 5vw, 28px);
+    color: #FFF;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 2.5vw, 12px);
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-shadow: 2px 2px 0px #0F0600;
+    box-shadow: 8px 8px 0px #0F0600;
+    z-index: 100;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    min-width: clamp(100px, 25vw, 140px);
+    line-height: 1.2;
+}
+
+.btn-voltar:hover {
+    background: linear-gradient(145deg, #FF5722, #FF7043);
+    transform: translateY(-2px);
+    box-shadow: 12px 12px 0px #0F0600;
+}
+
+.btn-voltar:active {
+    transform: translateY(0);
+    box-shadow: 4px 4px 0px #0F0600;
+}
+
+.nivel-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(300px, 90vw, 500px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.escolha {
+    background: linear-gradient(145deg, #FF6B35, #FF8C42);
+    border: 5px solid #0F0600;
+    border-top: 5px solid #FAC2A7;
+    border-left: 5px solid #FAC2A7;
+    padding: clamp(15px, 4vw, 25px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 8px 8px 0px #0F0600;
+    font-family: 'Press Start 2P', monospace;
+    text-align: center;
+    flex: 1;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.escolha::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.escolha:hover::before {
+    left: 100%;
+}
+
+.escolha:hover {
+    transform: translateY(-4px);
+    box-shadow: 12px 12px 0px #0F0600;
+}
+
+.escolha:active {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0px #0F0600;
+}
+
+.escolha h1 {
+    font-size: clamp(14px, 5vw, 20px);
+    color: #FFF;
+    text-shadow: 2px 2px 0px #0F0600;
+    margin: 0;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
+}
+
+.escolha.facil {
+    background: linear-gradient(145deg, #90EE90, #32CD32);
+    border-top-color: #7CFC00;
+    border-left-color: #7CFC00;
+}
+
+.escolha.facil:hover {
+    background: linear-gradient(145deg, #32CD32, #228B22);
+}
+
+.escolha.medio {
+    background: linear-gradient(145deg, #FFD700, #FFA500);
+    border-top-color: #FF8C00;
+    border-left-color: #FF8C00;
+}
+
+.escolha.medio:hover {
+    background: linear-gradient(145deg, #FFA500, #FF8C00);
+}
+
+.escolha.dificil {
+    background: linear-gradient(145deg, #FFB6C1, #FF69B4);
+    border-top-color: #FF1493;
+    border-left-color: #FF1493;
+}
+
+.escolha.dificil:hover {
+    background: linear-gradient(145deg, #FF69B4, #C71585);
+}
+
+.escolha.expert {
+    background: linear-gradient(145deg, #FF4500, #DC143C);
+    border-top-color: #B22222;
+    border-left-color: #B22222;
+}
+
+.escolha.expert:hover {
+    background: linear-gradient(145deg, #DC143C, #8B0000);
+}
+
+@media (max-width: 768px) {
+    .player-info {
+        top: 12px;
+        left: 12px;
+        gap: 3px;
+    }
+
+    .btn-voltar {
+        top: 12px;
+        right: 12px;
+        padding: 10px 16px;
+    }
+
+    .nivel-container {
+        padding: 15px;
+        gap: 10px;
+        width: 95vw;
+    }
+
+    .escolha {
+        padding: 18px 15px;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .player-info,
+    .btn-voltar {
+        display: none;
+    }
+
+    .nivel-container {
+        top: 55%;
+        padding: 12px;
+    }
+}
+
+.escolha:focus {
+    outline: 3px solid #FFD700;
+    outline-offset: 2px;
+}

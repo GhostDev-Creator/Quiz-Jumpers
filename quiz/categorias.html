@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Jumpers | Categorias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/categorias.css">
+</head>
+<body>
+    <main class="container" id="backgroundContainer">
+        <div class="clouds-container"></div>
+        <div class="details"><div class="floor-details-container"></div></div>
+        <div class="floor"></div>
+        <div class="mario-patrol" id="marioPatrol">
+            <img class="mario-sprite patrol-right active" src="../images/mario_idle_right.png" alt="Mario">
+            <img class="mario-sprite patrol-left hidden" src="../images/mario_idle_left.png" alt="Mario">
+            <img class="mario-sprite patrol-walk-right hidden" src="../images/mario_walk_right.png" alt="Mario">
+            <img class="mario-sprite patrol-walk-left hidden" src="../images/mario_walk_left.png" alt="Mario">
+            <img class="mario-sprite patrol-jump-right hidden" src="../images/mario_jump_right.png" alt="Mario">
+            <img class="mario-sprite patrol-jump-left hidden" src="../images/mario_jump_left.png" alt="Mario">
+            <img class="mario-sprite patrol-dead hidden" src="../images/mario_dead.png" alt="Mario morto">
+        </div>
+    </main>
+
+    <div class="player-info">
+        <div id="playerNameDisplay">JOGADOR: MARIO</div>
+        <div id="playerScore">PONTOS: 0</div>
+    </div>
+
+    <div class="categorias-container">
+        <h1 class="categorias-title">ESCOLHA A CATEGORIA</h1>
+        <div class="escolha" onclick="selectCategory('ciencias')"><h1>Ciências Gerais</h1></div>
+        <div class="escolha" onclick="selectCategory('eventos')"><h1>Eventos Históricos</h1></div>
+        <div class="escolha" onclick="selectCategory('automobilismo')"><h1>Automobilismo</h1></div>
+        <div class="escolha" onclick="selectCategory('culinaria')"><h1>Culinária Global</h1></div>
+        <div class="escolha" onclick="selectCategory('games')"><h1>Games</h1></div>
+        <div class="escolha voltar-btn" onclick="goBackToGame()"><h1>VOLTAR AO INICIO</h1></div>
+    </div>
+
+    <script src="../js/categorias.js"></script>
+</body>
+</html>

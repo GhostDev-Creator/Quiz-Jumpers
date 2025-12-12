@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Jumpers | Culinaria - Nivel</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/culinaria-nivel.css">
+</head>
+<body>
+    <div class="container-background">
+        <div class="clouds-container" id="cloudsContainer"></div>
+        <div class="floor"></div>
+        <div class="floor-details-container" id="floorDetailsContainer"></div>
+    </div>
+
+    <div class="player-info">
+        <div id="playerNameDisplay">JOGADOR: MARIO</div>
+        <div id="playerScore">PONTOS: 0</div>
+    </div>
+
+    <div class="btn-voltar" onclick="voltarCategorias()">VOLTAR</div>
+
+    <div class="nivel-container">
+        <div class="escolha facil" tabindex="0" onclick="selecionarNivel('facil')" onkeypress="selecionarNivel('facil')">
+            <h1>Fácil</h1>
+        </div>
+        <div class="escolha medio" tabindex="0" onclick="selecionarNivel('medio')" onkeypress="selecionarNivel('medio')">
+            <h1>Médio</h1>
+        </div>
+        <div class="escolha dificil" tabindex="0" onclick="selecionarNivel('dificil')" onkeypress="selecionarNivel('dificil')">
+            <h1>Difícil</h1>
+        </div>
+        <div class="escolha expert" tabindex="0" onclick="selecionarNivel('expert')" onkeypress="selecionarNivel('expert')">
+            <h1>Expert</h1>
+        </div>
+    </div>
+
+    <script src="../js/culinaria-nivel.js"></script>
+</body>
+</html>

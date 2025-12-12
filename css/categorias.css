@@ -1,0 +1,196 @@
+body {
+    background: linear-gradient(to bottom, #87CEEB 0%, #a1adff 70%);
+}
+
+.categorias-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    z-index: 100;
+}
+
+.categorias-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    color: #FFD700;
+    text-shadow: 4px 4px 0px #0F0600;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.escolha {
+    background: linear-gradient(145deg, #FF6B35, #FF8C42);
+    border: 5px solid #0F0600;
+    border-top: 5px solid #FAC2A7;
+    border-left: 5px solid #FAC2A7;
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 8px 8px 0px #0F0600;
+    font-family: 'Press Start 2P', monospace;
+    text-align: center;
+}
+
+.escolha:hover {
+    background: linear-gradient(145deg, #FF5722, #FF7043);
+    transform: translate(4px, -4px);
+    box-shadow: 12px 12px 0px #0F0600;
+}
+
+.escolha:active {
+    transform: translate(2px, -2px);
+    box-shadow: 4px 4px 0px #0F0600;
+}
+
+.escolha h1 {
+    font-size: 16px;
+    color: #FFF;
+    text-shadow: 2px 2px 0px #0F0600;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.player-info {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: #FFF;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    text-shadow: 2px 2px 0px #000;
+    z-index: 50;
+}
+
+.mario-patrol {
+    position: absolute;
+    bottom: 80px;
+    width: 50px;
+    height: 60px;
+    z-index: 10;
+    transition: bottom 0.5s ease;
+}
+
+.mario-sprite {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.15s ease;
+}
+
+.mario-sprite.hidden {
+    opacity: 0;
+}
+
+.mario-sprite.active {
+    opacity: 1;
+}
+
+.mario-sprite.patrol-dead {
+    filter: grayscale(100%) brightness(0.3) sepia(20%);
+}
+
+.mario-patrol.death {
+    z-index: 1000 !important;
+}
+
+.mario-patrol.death .mario-sprite {
+    transition: none !important;
+}
+
+@keyframes deathJump {
+    0% {
+        bottom: 80px;
+        transform: scale(1) rotate(0deg);
+    }
+
+    30% {
+        bottom: 280px;
+        transform: scale(1.1) rotate(180deg);
+    }
+
+    70% {
+        bottom: 230px;
+        transform: scale(1.2) rotate(360deg);
+    }
+
+    100% {
+        bottom: 180px;
+        transform: scale(1.1) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.clouds-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.cloud {
+    position: absolute;
+    width: 120px;
+    opacity: 0.8;
+    animation: movement linear infinite;
+    pointer-events: none;
+}
+
+.cloud.small {
+    width: 80px;
+    opacity: 0.7;
+}
+
+.cloud.medium {
+    width: 120px;
+    opacity: 0.8;
+}
+
+.cloud.large {
+    width: 160px;
+    opacity: 0.9;
+}
+
+@keyframes movement {
+    from {
+        right: -25%;
+    }
+
+    to {
+        right: 105%;
+    }
+}
+
+html, body {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    min-height: -webkit-fill-available !important;
+    overflow: hidden !important;
+}
+
+:root {
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 768px) {
+    .game-over-overlay {
+        padding-bottom: calc(var(--safe-area-bottom, 0px) + 10px) !important;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .game-over-box {
+        padding: 20px !important;
+        max-height: 85vh !important;
+    }
+}

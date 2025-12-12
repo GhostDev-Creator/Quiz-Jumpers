@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Jumpers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="gameContainer" class="container">
+        <div id="playerNameDisplay" class="player-name">JOGADOR: MARIO</div>
+        
+        <div class="clouds-container"></div>
+        
+        <div class="details">
+            <div class="floor-details-container"></div>
+        </div>
+        
+        <div class="floor"></div>
+        
+        <div class="block question-block" id="questionBlock">
+            <img src="./images/lucky-block.png" alt="Bloco de Interrogação">
+        </div>
+        
+        <div class="mario">
+            <img class="mario-sprite idle-right active" src="./images/mario_idle_right.png" alt="Mario parado direita">
+            <img class="mario-sprite idle-left hidden" src="./images/mario_idle_left.png" alt="Mario parado esquerda">
+            <img class="mario-sprite walk-right hidden" src="./images/mario_walk_right.png" alt="Mario andando direita">
+            <img class="mario-sprite walk-left hidden" src="./images/mario_walk_left.png" alt="Mario andando esquerda">
+            <img class="mario-sprite jump-right hidden" src="./images/mario_jump_right.png" alt="Mario pulando direita">
+            <img class="mario-sprite jump-left hidden" src="./images/mario_jump_left.png" alt="Mario pulando esquerda">
+            <img class="mario-sprite dead hidden" src="./images/mario_dead.png" alt="Mario morto">
+        </div>
+
+        <div class="table-ranking">
+            
+        </div>
+    </main>
+
+    <div id="pauseMenu" class="pause-menu hidden">
+        <div class="pause-overlay"></div>
+        <div class="pause-container">
+            <button class="close-menu" id="closeMenu">✕</button>
+            <h1>Quiz Jumpers</h1>
+            <div class="player-input">
+                <label>Insira seu nome:</label>
+                <input type="text" id="playerName" value="MARIO">
+            </div>
+            <div class="start">
+                <h1>INICIAR</h1>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameOverScreen" class="game-over-screen hidden">
+        <div class="game-over-container">
+            <h1 class="game-over-title">GAME OVER</h1>
+            <p class="game-over-score">Pontos Finais: <span id="finalScore">0</span></p>
+            <p class="game-over-instruction">Pressione SPACE ou clique na tela para reiniciar</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
